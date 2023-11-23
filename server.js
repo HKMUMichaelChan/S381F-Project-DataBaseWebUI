@@ -288,7 +288,7 @@ function queryBuilder(name = "", description = "", category = "", price_min = ""
         response.status(200).send({"response":"OK"});
       } 
       else {
-        response.sendStatus(400);
+        response.status(400).send({"error":"Username or password is incorrect"});
         // response.json({"error":"Username or password is incorrect"});
       }
     });

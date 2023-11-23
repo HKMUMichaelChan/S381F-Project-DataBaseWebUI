@@ -48,11 +48,17 @@
         if (response.status === 200) {  
           location.replace('/');
         }
+        else if(response.status === 400){
+
+          return response.json();
+
+  
+        }
       })
       .then(data => {
 
         
-        console.log(data['error']);
+        // console.log(data['error']);
         const errorlabel = document.querySelector('.error');
         errorlabel.textContent  = data['error']
   
