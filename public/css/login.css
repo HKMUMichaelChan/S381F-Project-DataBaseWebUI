@@ -11,6 +11,7 @@ body {
 
 form {
   max-width: 300px;
+  min-width: 260px;
   margin: 0 auto;
   padding: 20px;
   background-color: #fff;
@@ -23,7 +24,9 @@ h2 {
   color: #333;
   margin-top: 0;
 }
-
+.error{
+  color: #ff0000;
+}
 label {
   display: block;
   margin-bottom: 10px;
@@ -40,6 +43,8 @@ input[type="password"] {
   box-sizing: border-box;
   margin-bottom: 20px;
 }
+
+
 
 input[type="submit"] {
   background-color: #4CAF50;

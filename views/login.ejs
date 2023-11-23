@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login</title>
+  <link rel="stylesheet" type="text/css" href="/css/login.css">
+</head>
+<body>
+  <div class="container">
+
+    
+    <form id="loginForm" action="/login" method="POST">
+      <!-- <h2>Login</h2> -->
+      <div class="logo">
+        <img src="\image\icon.png" alt="Logo" height="80">
+      </div>
+      
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" required>
+
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required>
+      <label class="error" for="submit"></label>
+      <input type="submit" id="submit" value="Login">
+    </form>
+  </div>
+
+  <script>
+    const lform = document.getElementById('loginForm');
+  
+    lform.addEventListener('submit', (event) => {
+      event.preventDefault(); // 防止表单默认提交行为
+
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      const formData = new URLSearchParams();
+      formData.append('username', username);
+      formData.append('password', password);
+      const requestBody = formData.toString();
+      fetch('/login', {
+        method: 'POST',
+        body: requestBody,
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      })
+      .then(response => {
+        if (response.redirected) {
+          // 处理重定向
+          window.location.href = response.url; // 在前端进行页面跳转
+        } else {
+          return response.json();
+        }
+      })
+      .then(data => {
+        // 在這裡處理回應資料
+  
+        console.log(data['error']);
+        const errorlabel = document.querySelector('.error');
+        errorlabel.textContent  = data['error']
+  
+      })
+      .catch(error => {
+        // 在這裡處理錯誤
+        console.error(error);
+      });
+    });
+  </script>
+</body>
+
+</html>

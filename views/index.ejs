@@ -1,42 +1,132 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>登入界面</title>
+  <title>Welcome! <%= userid %></title>
+  <link rel="stylesheet" type="text/css" href="/css/index.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
+
 <body>
-  <h1>登入界面</h1>
+  <div class="header"><p>Welcome! <%= userid %></p></div>
+  <div class="Area">
+  <div class="container">
+    
+    <div class="sideArea">
+      <form id="queryForm">
+        <label for="id">ID</label>
 
-  <form action="/login" method="POST">
-    <input type="text" name="username" placeholder="用戶名">
-    <input type="password" name="password" placeholder="密碼">
-    <button type="submit">登入</button>
-  </form>
+        <input class="text-input" type="text" id="id" name="id"  value="<%= query['id'] %>"><br><br>
+        <label for="name">Name</label>
+        <input class="text-input" type="text" id="name" name="name"  value="<%= query['name'] %>"><br><br>
+        <label for="description">Description</label>
+        <input class="text-input" type="text" id="description" name="description"  value="<%= query['description'] %>"><br><br>
+        <label for="category">Category</label>
+        <input class="text-input" type="text" id="category" name="category"  value="<%= query['category'] %>"><br><br>
+        <label for="range">Price range:</label>
+        <div style="display: flex; align-items: center;max-width: 241px;">
+          <input class="range" type="number" id="rangeMin" name="rangeMin"  value="<%= query['rangeMin'] %>">
+          <div style="margin: 0 5px;"> - </div> 
+          <input class="range" type="number" id="rangeMax" name="rangeMax"  value="<%= query['rangeMax'] %>">
+        </div><br>
+    
+        </select><br><br>
+      
+        <input type="submit" value="提交">
+        <input type="reset" value="重置">
+      </form>
+    </div>
+    
+    <div class="mainArea">
+      <% Products.forEach(function(Product) { %>
+      <div class="productContainer">
+        <% if(typeof Product.imageUrl === 'string'){ %>
+        <img src="<%= Product.imageUrl %>"  alt="Your Image">
+        <% }else{ %>
+          <img src="image\icon.png"  alt="Your Image">
+        <% }; %>   
+        <div class="productInfo">
+          <p><%= Product.name %> </p>
+          <p><%= Product.category %> </p>
+          <p style="max-height: 74px;"><%= Product.description %></p>
+          
+        </div>
+        <div class="productPrice">
+          <p>$ <%= Product.price %></p>
+          <button onclick="editProduct('<%= Product._id %>')"><i class="fas fa-pencil-alt"></i></button>
+          <button onclick="removeProduct('<%= Product._id %>')"><i class="fas fa-trash"></i></button>
+        </div>
+      </div>
+      <% }); %>
+    
+    </div>
+    </div>
 
-  <h1>用戶列表</h1>
-
-  <% if (users.length > 0) { %>
-    <ul>
-      <% for (var i = 0; i < users.length; i++) { %>
-        <li><%= users[i].username %></li>
-      <% } %>
-    </ul>
-  <% } else { %>
-    <p>沒有用戶</p>
-  <% } %>
-
-  <h1>上傳文件</h1>
-
-  <form action="/upload" method="POST" enctype="multipart/form-data">
-    <input type="file" name="file">
-    <button type="submit">上傳</button>
-  </form>
-
-  <h1>搜尋用戶</h1>
-
-  <form action="/search" method="POST">
-    <input type="text" name="keyword" placeholder="關鍵字">
-    <button type="submit">搜尋</button>
-  </form>
+  </div>
+  <button class="BottomRightBtn addBtn" onclick="addBtnClicked()">+</button>
+  <button class="BottomRightBtn uploadBtn"><i class="fas fa-upload"></i></button>
 </body>
+<script>
+
+  const qForm = document.getElementById('queryForm');
+
+
+  qForm.addEventListener('submit', (event) => {
+    
+    event.preventDefault(); // 防止表单默认提交行为
+    const id = document.getElementById('id').value;
+    const name = document.getElementById('name').value;
+    const description = document.getElementById('description').value;
+    const category = document.getElementById('category').value;
+    const rangeMin = document.getElementById('rangeMin').value;
+    const rangeMax = document.getElementById('rangeMax').value;
+
+    const query = '/?_id=' + id + '&name=' + name + '&description=' + description + '&category=' + category + '&rangeMin=' + rangeMin + '&rangeMax=' + rangeMax;
+    location.replace(query)
+  });
+  qForm.addEventListener('reset', (event) => {
+    
+    event.preventDefault(); // 防止表单默认提交行为
+    location.replace('/');
+  });
+  function removeProduct(target){
+    const result = confirm("Are you sure you want to Remove this record?");
+
+    if (result) {
+      fetch('/removeProduct?target=' + target, {
+      method: 'POST'})
+      .then(response => {
+        if (response.status === 200) {  
+            window.location.reload();
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
+    }
+
+  }
+
+  function editProduct(target){
+    const url = "/editProductForm?target=" + target;  // 指定新窗口的 URL
+    const windowName = 'NewWindow';  // 新窗口的名称，可以是一个唯一的字符串，用于标识窗口
+    const width = 270;
+    const height = 480;
+    const left = (screen.availWidth - width) / 2;
+    const top = (screen.availHeight - height) / 2;
+
+    window.open(url, windowName, `width=${width}, height=${height}, left=${left}, top=${top}`);
+
+  }
+  function addBtnClicked(){
+    const url = "/addProductForm";  // 指定新窗口的 URL
+    const windowName = 'NewWindow';  // 新窗口的名称，可以是一个唯一的字符串，用于标识窗口
+    const width = 270;
+    const height = 480;
+    const left = (screen.availWidth - width) / 2;
+    const top = (screen.availHeight - height) / 2;
+
+    window.open(url, windowName, `width=${width}, height=${height}, left=${left}, top=${top}`);
+
+  }
+</script>
 </html>

@@ -1,0 +1,193 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+  }
+body p{
+    margin: auto;
+}
+.header{
+    background-color: #333;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.container{
+    display: flex;
+    /* border: red solid 1px; */
+    margin:0 auto;
+    justify-content: center;
+    padding-top: 20px;
+    min-height: calc(100vh - 58px);
+    width: 1200px;
+
+}
+.sideArea{
+    width: 20%;
+    min-height: 80%;
+    background-color: #ffffff;
+    /* border: blue solid 1px; */
+    border-top-left-radius: 10px;
+    border-right: 1px dashed #eaeaea;
+}
+form {
+    max-width: 241px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: Arial, sans-serif;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  .text-input,
+  select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+.range{
+    width: calc(45%);
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+  input[type="submit"],
+  input[type="reset"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-right: 10px;
+  }
+
+  input[type="reset"] {
+    background-color: #f44336;
+  }
+
+  input[type="submit"]:hover,
+  input[type="reset"]:hover {
+    background-color: #45a049;
+  }
+.mainArea{
+    width: 80%;
+    min-height: 60%;
+    background-color: #ffffff;
+    /* border: blue solid 1px; */
+    border-top-right-radius: 10px;
+}
+  .productContainer {
+    width: 100%;
+    height: 250px;
+
+    /* border: #333 solid 1px; */
+    font-weight: bold;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    border-bottom: 1px dashed #eaeaea;
+
+  }
+  .productInfo{
+    flex-direction: column;
+    padding-top: 20px;
+    width: calc(46% + 30px);
+    
+  }
+  .productContainer img {
+    max-width: calc(33% - 30px);
+    min-width: calc(33% - 30px);
+    border-radius: 10px;
+    object-fit: cover;
+    margin: auto 20px;
+  }
+  
+  .productContainer p {
+    margin: 0;
+    padding: 10px 20px;
+    overflow-wrap: break-word;
+    overflow-y: auto;
+
+  }
+
+  .productPrice{
+    flex-direction: column;
+    padding-top: 20px;
+    width: calc(20%);
+  }
+  .productPrice
+  {
+    min-height: 231px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    text-align: right;
+  }
+  .productPrice button{
+
+    margin-right: 20px;
+    margin-bottom: 20px;
+    background-color: #4CAF50; /* 按钮背景颜色为绿色 */
+    color: #fff; /* 文字颜色为白色 */
+    border: none;
+    border-radius: 50%; /* 将按钮边框设置为圆形 */
+    padding: 16px;
+    font-size: 18px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    width: 60px;
+    height: 60px;
+  }
+  .productPrice p{
+
+    text-align: right;
+    font-size: x-large;
+  }
+
+
+.BottomRightBtn{
+    position: fixed;
+    background-color: #4CAF50; /* 按钮背景颜色为绿色 */
+    color: #fff; /* 文字颜色为白色 */
+    border: none;
+    border-radius: 50%; /* 将按钮边框设置为圆形 */
+    padding: 16px;
+    font-size: 28px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    width: 60px;
+    height: 60px;
+}
+
+
+
+.addBtn {
+    bottom: 20px;
+    right: 20px;
+
+  }
+
+.uploadBtn {
+    bottom: 100px;
+    right: 20px;
+}
