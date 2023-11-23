@@ -111,13 +111,15 @@ form {
     flex-direction: column;
     padding-top: 20px;
     width: calc(46% + 30px);
+    border-left: 1px dashed #eaeaea;
     
   }
   .productContainer img {
     max-width: calc(33% - 30px);
     min-width: calc(33% - 30px);
     border-radius: 10px;
-    object-fit: cover;
+    max-height: 221px;
+    object-fit: contain;
     margin: auto 20px;
   }
   
