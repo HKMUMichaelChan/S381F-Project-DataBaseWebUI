@@ -10,18 +10,13 @@
     <input type="text" id="name" name="name" value="<%= Product.name %>" required>
 
     <label for="description">Description:</label>
-    <input type="text" id="description" name="description" value=<%= Product.description %> required>
+    <textarea type="text" id="description" name="description" rows="4" required><%= Product.description %></textarea>
 
     <label for="price">Price:</label>
     <input type="number" id="price" name="price" step="0.1" min="0.1" value=<%= Product.price %> required>
 
     <label for="category">Category:</label>
-    <select id="category" name="category">
-      <option value="<%= Product.category %>" selected><%= Product.category %>(Default)</option>
-      <option value="category1" >category1</option>
-      <option value="category2">category2</option>
-      <option value="category3">category3</option>
-    </select>
+    <input type="text" id="category" name="category" required value="<%= Product.category %>">
 
     <label for="imageUrl">Image Link(Optional):</label>
     <input type="text" id="imageUrl" name="imageUrl" value="<%= Product.imageUrl %>">
@@ -33,7 +28,7 @@
     const lform = document.getElementById('productForm');
   
     lform.addEventListener('submit', (event) => {
-    event.preventDefault(); // 防止表单默认提交行为
+    event.preventDefault(); 
 
     const name = document.getElementById('name').value;
     const description = document.getElementById('description').value;
@@ -56,20 +51,17 @@
       }
     })
     .then(response => {
-    // 在收到响应时检查特定条件
+
     console.log(response.status)
     if (response.status === 200) {
-      // 关闭窗口
+
         window.close();
         window.opener.location.reload();
-    } else {
-      // 处理其他响应
     }
-        
 
     })
     .catch(error => {
-      // 在這裡處理錯誤
+
       console.error(error);
     });
   });

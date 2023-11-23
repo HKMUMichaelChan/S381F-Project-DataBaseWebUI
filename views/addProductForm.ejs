@@ -16,11 +16,7 @@
     <input type="number" id="price" name="price" step="0.1" min="0.1" value="10" required>
 
     <label for="category">Category:</label>
-    <select id="category" name="category">
-      <option value="category1" selected>category1</option>
-      <option value="category2">category2</option>
-      <option value="category3">category3</option>
-    </select>
+    <input type="text" id="category" name="category" required>
 
     <label for="imageUrl">Image Link(Optional):</label>
     <input type="text" id="imageUrl" name="imageUrl">
@@ -32,7 +28,7 @@
     const lform = document.getElementById('productForm');
   
     lform.addEventListener('submit', (event) => {
-    event.preventDefault(); // 防止表单默认提交行为
+    event.preventDefault(); 
 
     const name = document.getElementById('name').value;
     const description = document.getElementById('description').value;
@@ -55,20 +51,15 @@
       }
     })
     .then(response => {
-    // 在收到响应时检查特定条件
     console.log(response.status)
     if (response.status === 200) {
-      // 关闭窗口
         window.close();
         window.opener.location.reload();
-    } else {
-      // 处理其他响应
     }
         
 
     })
     .catch(error => {
-      // 在這裡處理錯誤
       console.error(error);
     });
   });

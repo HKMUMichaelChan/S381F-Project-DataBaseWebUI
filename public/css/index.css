@@ -111,7 +111,7 @@ form {
     flex-direction: column;
     padding-top: 20px;
     width: calc(46% + 30px);
-    border-left: 1px dashed #eaeaea;
+
     
   }
   .productContainer img {
@@ -121,6 +121,7 @@ form {
     max-height: 221px;
     object-fit: contain;
     margin: auto 20px;
+    border-right: 1px dashed #eaeaea;
   }
   
   .productContainer p {
@@ -184,12 +185,12 @@ form {
 
 
 .addBtn {
-    bottom: 20px;
+    bottom: 100px;
     right: 20px;
 
   }
 
 .uploadBtn {
-    bottom: 100px;
+    bottom: 20px;
     right: 20px;
 }

@@ -17,19 +17,19 @@ app.use(session({
     saveUninitialized: false
   }));
 
-// 設置模板引擎為ejs
+
 app.set('view engine', 'ejs');
 
-// 設置靜態文件目錄
+
 app.use(express.static('public'));
 
-// For parsing application/x-www-form-urlencoded
+
 app.use(express.urlencoded({ extended: true }))
-// For parsing application/json
+
 app.use(express.json());
 
 
-// 設置上傳文件存儲目錄和文件名
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, 'public/uploads');
@@ -40,7 +40,6 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-// 連接到MongoDB
 
 
 const username = 'admin'
@@ -84,14 +83,11 @@ function queryBuilder(name = "", description = "", category = "", price_min = ""
       response.redirect('/login');
       return
         }
-    // console.log(request.query)
     userid = request.session.userid
 
 
     const query = queryBuilder( request.query["name"] , request.query["description"] , request.query["category"] , request.query["rangeMin"], request.query["rangeMax"] );
 
-      console.log(query);
-      // query[request.query["type"]] = { $regex: request.query["search"], $options: "i" };
 
     cursor = db.collection('Products').find(query);
     cursor.toArray((error, Products) => {
@@ -99,7 +95,6 @@ function queryBuilder(name = "", description = "", category = "", price_min = ""
         console.error(error);
         return;
       }
-      console.log(Products);
       response.render('index', {userid:userid, Products:Products, query:request.query});
     });
     
@@ -120,7 +115,6 @@ function queryBuilder(name = "", description = "", category = "", price_min = ""
           console.error(error);
           return;
         }
-        console.log(Products[0]);
         response.render('editProductForm', {Product:Products[0]});
       });
     }
@@ -136,7 +130,6 @@ function queryBuilder(name = "", description = "", category = "", price_min = ""
     try{
       const result = await db.collection('Products').updateOne(filter, update);
       
-      console.log('Data updated:', id);
     } catch (error) {
       console.error('Failed to upload data', error);
     }
@@ -172,7 +165,6 @@ function queryBuilder(name = "", description = "", category = "", price_min = ""
   });
   async function removeData(filter){
     const result = await db.collection('Products').deleteOne(filter);
-    console.log(result);
   }
   app.post('/removeProduct', function(request, response){
     if (!request.session.authenticated) { 
@@ -180,7 +172,7 @@ function queryBuilder(name = "", description = "", category = "", price_min = ""
       return
         }
     if(request.query.hasOwnProperty("target")){
-      // console.log("search");
+
       const filter = { _id: ObjectId(request.query['target']) };
       removeData(filter);
       response.sendStatus(200);
@@ -215,7 +207,6 @@ function queryBuilder(name = "", description = "", category = "", price_min = ""
   async function uploadData(collection, data) {
     try {
       const result = await collection.insertOne(data);
-      console.log('Data uploaded:', result.insertedId);
     } catch (error) {
       console.error('Failed to upload data', error);
     }
@@ -225,7 +216,6 @@ function queryBuilder(name = "", description = "", category = "", price_min = ""
     if (!request.session.authenticated) { 
       response.send("Invalid authority");
       }
-    console.log('addProduct')
     const name = request.body.name; 
     const description = request.body.description; 
     const price = request.body.price; 
@@ -244,7 +234,7 @@ function queryBuilder(name = "", description = "", category = "", price_min = ""
   });
 
 
-  // 處理登入頁面
+
   app.get('/login', function(request, response) {
 
     if (request.query['m'] == '0'){
@@ -256,77 +246,38 @@ function queryBuilder(name = "", description = "", category = "", price_min = ""
 
   });
 
-  // 處理登入請求
   app.post('/login', (request, response) => {
 
-    const userid = request.body.username; // 從請求中獲取使用者名稱
-    const password = request.body.password; // 從請求中獲取密碼
+    const userid = request.body.username; 
+    const password = request.body.password; 
   
-    // 在 MongoDB 的 Account 集合中查詢符合使用者名稱的文件
+
     db.collection('Auth').findOne({userid: userid }, function(err, user) {
       if (err) throw err;
 
-      console.log(userid)
+
 
       if (user && user.password === password) {
-        // 使用者驗證成功，將使用者資訊存儲到會話中
+
         request.session.userid = userid;
         request.session.authenticated = true,
-        console.log(request.session)
         response.redirect('/');
       } 
       else {
-        response.json({"error":"Username or password is incorrect"}); // 替換為相應的處理邏輯
+        response.json({"error":"Username or password is incorrect"});
       }
     });
   });
 
 
+  app.get('/logout', (req, res) => {
 
-//   // 處理上傳文件請求
-//   app.post('/upload', upload.single('file'), function(req, res) {
-//     // 處理上傳文件邏輯
-//     // ...
+    req.session.userId = null;
+    req.session.authenticated = null;
+  
+    res.redirect('/login');
+  });
 
-//     // 重定向到主頁
-//     res.redirect('/');
-//   });
-
-//   // 處理更改文件請求
-//   app.post('/edit/:id', function(req, res) {
-//     const id = req.params.id;
-//     const newData = req.body;
-
-//     // 處理更改文件邏輯
-//     // ...
-
-//     // 重定向到主頁
-//     res.redirect('/');
-//   });
-
-//   // 處理刪除文件請求
-//   app.post('/delete/:id', function(req, res) {
-//     const id = req.params.id;
-
-//     // 處理刪除文件邏輯
-//     // ...
-
-//     // 重定向到主頁
-//     res.redirect('/');
-//   });
-
-//   // 處理搜尋請求
-//   app.post('/search', function(req, res) {
-//     const keyword = req.body.keyword;
-
-//     // 處理搜尋邏輯
-//     // ...
-
-//     // 重定向到主頁
-//     res.redirect('/');
-//   });
-
-  // 啟動伺服器
   app.listen(port, function() {
     console.log('Server listening on port ' + port);
   });

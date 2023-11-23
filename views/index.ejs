@@ -45,7 +45,7 @@
           <img src="image\icon.png"  alt="Your Image">
         <% }; %>   
         <div class="productInfo">
-          <p><%= Product.name %> </p>
+          <h2><%= Product.name %> </h2>
           <p><%= Product.category %> </p>
           <p style="max-height: 74px;"><%= Product.description %></p>
           
@@ -62,7 +62,9 @@
     </div>
 
   </div>
+  <button class="BottomRightBtn uploadBtn" onclick="logout()"><i class="fas fa-sign-out-alt"></i></button>
   <button class="BottomRightBtn addBtn" onclick="addBtnClicked()">+</button>
+
 </body>
 <script>
 
@@ -71,7 +73,7 @@
 
   qForm.addEventListener('submit', (event) => {
     
-    event.preventDefault(); // 防止表单默认提交行为
+    event.preventDefault(); 
     const id = document.getElementById('id').value;
     const name = document.getElementById('name').value;
     const description = document.getElementById('description').value;
@@ -84,7 +86,7 @@
   });
   qForm.addEventListener('reset', (event) => {
     
-    event.preventDefault(); // 防止表单默认提交行为
+    event.preventDefault(); 
     location.replace('/');
   });
   function removeProduct(target){
@@ -104,10 +106,13 @@
     }
 
   }
+function logout(){
+  location.replace('/logout');
+}
 
   function editProduct(target){
-    const url = "/editProductForm?target=" + target;  // 指定新窗口的 URL
-    const windowName = 'NewWindow';  // 新窗口的名称，可以是一个唯一的字符串，用于标识窗口
+    const url = "/editProductForm?target=" + target; 
+    const windowName = 'NewWindow';
     const width = 270;
     const height = 480;
     const left = (screen.availWidth - width) / 2;
@@ -117,8 +122,8 @@
 
   }
   function addBtnClicked(){
-    const url = "/addProductForm";  // 指定新窗口的 URL
-    const windowName = 'NewWindow';  // 新窗口的名称，可以是一个唯一的字符串，用于标识窗口
+    const url = "/addProductForm";  
+    const windowName = 'NewWindow';  
     const width = 270;
     const height = 480;
     const left = (screen.availWidth - width) / 2;
