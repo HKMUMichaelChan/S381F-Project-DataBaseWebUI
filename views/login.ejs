@@ -44,16 +44,14 @@
         }
       })
       .then(response => {
-        if (response.redirected) {
 
-          window.location.href = response.url;
-        } else {
-          return response.json();
+        if (response.status === 200) {  
+          location.replace('/');
         }
       })
       .then(data => {
 
-  
+        
         console.log(data['error']);
         const errorlabel = document.querySelector('.error');
         errorlabel.textContent  = data['error']

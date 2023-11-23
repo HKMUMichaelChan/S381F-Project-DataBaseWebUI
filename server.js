@@ -105,7 +105,7 @@ function queryBuilder(name = "", description = "", category = "", price_min = ""
 
   app.get('/editProductForm', function(request, response){
     if (!request.session.authenticated) { 
-      response.send("Invalid authority");
+      response.status(401).send("Invalid authority");
       return
         }
     if(request.query.hasOwnProperty("target")){
@@ -134,9 +134,33 @@ function queryBuilder(name = "", description = "", category = "", price_min = ""
       console.error('Failed to upload data', error);
     }
   }
+
+  app.post('/getProducts', function(request, response){
+    if (!request.session.authenticated) { 
+      response.status(401).send("Invalid authority");
+      return
+        }
+    if(request.query.hasOwnProperty("by") && request.query.hasOwnProperty("query")){
+      const method = request.query["by"];
+      const query = {}
+      query[method] = request.query['query'];
+
+      cursor = db.collection('Products').find(query);
+      cursor.toArray((error, Products) => {
+        if (error) {
+          console.error(error);
+          return;
+        }
+
+        // console.log(Products);
+        response.status(200).send({"status":"OK","Products":Products});
+      }
+      )}
+  })
+
   app.post('/editProduct', function(request, response){
     if (!request.session.authenticated) { 
-      response.send("Invalid authority");
+      response.status(401).send("Invalid authority");
       return
         }
     if(request.query.hasOwnProperty("target")){
@@ -156,11 +180,11 @@ function queryBuilder(name = "", description = "", category = "", price_min = ""
 
       updateDocumentById(request.query['target'], updatedData);
 
-      response.sendStatus(200);
+      response.status(200).send({"response":"OK"});
     }
     
     else{
-      response.send("Error:No Edit Target")
+      response.status(400).send("Error:No Edit Target")
     }
   });
   async function removeData(filter){
@@ -168,23 +192,23 @@ function queryBuilder(name = "", description = "", category = "", price_min = ""
   }
   app.post('/removeProduct', function(request, response){
     if (!request.session.authenticated) { 
-      response.send("Invalid authority");
+      response.status(401).send("Invalid authority");
       return
         }
     if(request.query.hasOwnProperty("target")){
 
       const filter = { _id: ObjectId(request.query['target']) };
       removeData(filter);
-      response.sendStatus(200);
+      response.status(200).send({"response":"OK"});
     }
     else{
-      response.send("Error:No Remove Target")
+      response.status(400).send("Error:No Remove Target")
     }
 });
 
   app.get('/addProductForm', function(request, response) {
     if (!request.session.authenticated) { 
-      response.send("Invalid authority");
+      response.status(401).send("Invalid authority");
       return
         }
     response.render('addProductForm');
@@ -214,7 +238,7 @@ function queryBuilder(name = "", description = "", category = "", price_min = ""
   
   app.post('/addProduct', function(request, response) {
     if (!request.session.authenticated) { 
-      response.send("Invalid authority");
+      response.status(401).send("Invalid authority");
       }
     const name = request.body.name; 
     const description = request.body.description; 
@@ -229,7 +253,7 @@ function queryBuilder(name = "", description = "", category = "", price_min = ""
     }
 
     uploadData(db.collection('Products'), product)
-    response.sendStatus(200);
+    response.status(200).send({"response":"OK"});
 
   });
 
@@ -255,16 +279,17 @@ function queryBuilder(name = "", description = "", category = "", price_min = ""
     db.collection('Auth').findOne({userid: userid }, function(err, user) {
       if (err) throw err;
 
-
+      // console.log(userid);
 
       if (user && user.password === password) {
 
         request.session.userid = userid;
         request.session.authenticated = true,
-        response.redirect('/');
+        response.status(200).send({"response":"OK"});
       } 
       else {
-        response.json({"error":"Username or password is incorrect"});
+        response.sendStatus(400);
+        // response.json({"error":"Username or password is incorrect"});
       }
     });
   });
